@@ -1,9 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from songline import Sendline
+import Sendline
 import time
 import datetime 
 import csv 
+import requests
 from bs4 import BeautifulSoup as soup
 
 opt = webdriver.ChromeOptions()
@@ -75,19 +76,14 @@ with open('covid19-thai-recorded.csv', 'w', newline="") as csv_file:
     for k, v in d.items():
        writer.writerow([k, v])
 
-
-
-
-
-
 ########################
 #ส่วนการส่ง Line
 
 #Send to Line
 #อย่าลืมสร้าง Token นะครับ
 
-token_me = ' ... '
-token_line_group = ' ... '
+token_me = 'HG4Xhtk78CYvTwPAB4mBRhWxWnEEmvowBuiZmvXDZTj'
+token_line_group = 'HG4Xhtk78CYvTwPAB4mBRhWxWnEEmvowBuiZmvXDZTj'
 
 
 currentDT = datetime.datetime.now()
@@ -131,3 +127,16 @@ else :
 
     messenger = Sendline( token_line_group )
     messenger.sendtext(text_)
+
+
+url = 'https://notify-api.line.me/api/notify'
+token = 'HG4Xhtk78CYvTwPAB4mBRhWxWnEEmvowBuiZmvXDZTj'
+headers = {'content-type':'application/x-www-form-urlencoded','Authorization':'Bearer '+token}
+
+r = requests.post(url, headers=headers , data = {'message': text_})
+
+# Error
+# {
+#     "status": 405,
+#     "message": "Method Not Allowed"
+# }
